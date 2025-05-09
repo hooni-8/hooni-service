@@ -3,6 +3,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { Box, Typography, Button, Paper, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {useNavigate} from "react-router-dom";
+import Logo from '@assets/imgs/Hooni_logo.png';
 
 const CenteredContainer = styled(Box)(({ theme }) => ({
     height: 'calc(100vh - 64px)',
@@ -23,7 +24,7 @@ export default function Home() {
         <CenteredContainer>
             <Paper elevation={6} sx={{ padding: 6, borderRadius: 4, maxWidth: 400, boxSizing: 'border-box' }}>
                 <Stack spacing={3} alignItems="center">
-                    <CheckCircleOutlineIcon sx={{ fontSize: 60, color: 'success.main' }} />
+                    <img src={Logo} alt="logo" style={{height: 60, width: 'auto'}}/>
                     <Typography variant="h5" fontWeight="bold">
                         Hooni의 Service!
                     </Typography>
@@ -31,14 +32,14 @@ export default function Home() {
                         개인적으로 필요한 서비스를 모음
                     </Typography>
 
-                    <Stack spacing={1} width="100%" sx={{ mt: 2 }}>
+                    <Stack spacing={1} width="100%" sx={{mt: 2}}>
                         {menuItems.map((item) => (
                             <Button
                                 key={item.text}
                                 variant={item.variant}
                                 fullWidth
                                 onClick={() => navigate(item.path)}
-                                sx={{ borderRadius: 3 }}
+                                sx={{borderRadius: 3}}
                             >
                                 {item.text}
                             </Button>
