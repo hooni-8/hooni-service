@@ -1,4 +1,5 @@
 import { useState } from "react";
+import '@styles/loancalc/Loancalc.scss';
 import {
     Box,
     Button,
@@ -13,47 +14,42 @@ import {
     Paper,
     TableContainer,
 } from "@mui/material";
-import { styled } from '@mui/material/styles';
-
-// 배경 스타일 추가
-const BackgroundContainer = styled(Box)(({ theme }) => ({
-    minHeight: 'calc(100vh - 64px)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'linear-gradient(to right, #e3f2fd, #bbdefb)', // 그라디언트 배경
-    padding: '16px',
-    boxSizing: 'border-box',
-}));
+import { parseNumber, numberOnly, formatNumber } from "@components/utils/Utils";
 
 export default function Loancalc() {
-    const [principal, setPrincipal] = useState('');
-    const [interestRate, setInterestRate] = useState('');
-    const [year, setYear] = useState(new Date().getFullYear());
+    const [principal, setPrincipal] = useState('');             // 대출금
+    const [interestRate, setInterestRate] = useState('');       // 금리
+    const [unit, setUnit] = useState('1,000,000');              // 단위
+    const [year, setYear] = useState(new Date().getFullYear());        // 연도
+
     const [results, setResults] = useState([]);
 
-    const parseNumber = (formatted) => formatted.replace(/,/g, '');
-    const formatNumber = (value) => {
-        if (!value && value !== 0) return '';
-        return Number(value).toLocaleString('ko-KR');
-    };
-
-    const handlePrincipalChange = (e) => {
-        const numberOnly = e.target.value.replace(/[^0-9]/g, '');
-        setPrincipal(formatNumber(numberOnly));
+    const handleFormatChange = (type, value) => {
+        switch (type) {
+            case 'principal':
+                setPrincipal(formatNumber(numberOnly(value)));
+                break;
+            case 'unit':
+                setUnit(formatNumber(numberOnly(value)));
+                break;
+        }
     };
 
     const calculateInterest = () => {
         const maxAmount = parseInt(parseNumber(principal), 10);
         const rate = parseFloat(interestRate) / 100;
+        const unitInt = parseInt(parseNumber(unit), 10);
 
         if (!maxAmount || !rate) {
             alert("대출금과 이자율을 정확히 입력해주세요.");
             return;
+        } else if (maxAmount < unitInt) {
+            alert("대출금보다 단위가 높을 수 없습니다.");
+            return;
         }
 
         const rows = [];
-        for (let amount = maxAmount; amount >= 1000000; amount -= 1000000) {
+        for (let amount = maxAmount; amount >= unitInt; amount -= unitInt) {
             const totalInterest = amount * rate;
             const dailyInterest = totalInterest / 365;
 
@@ -79,7 +75,7 @@ export default function Loancalc() {
     };
 
     return (
-        <BackgroundContainer>
+        <Box className="background-container">
             <Container maxWidth="xl" disableGutters>
                 <Typography variant="h4" gutterBottom align="center" sx={{ fontSize: { xs: '1.5rem', sm: '2rem' } }}>
                     💰 만기일시상환 이자 계산기
@@ -90,7 +86,7 @@ export default function Loancalc() {
                         label="대출금 (₩)"
                         variant="outlined"
                         value={principal}
-                        onChange={handlePrincipalChange}
+                        onChange={(e) => handleFormatChange('principal', e.target.value)}
                         fullWidth
                         margin="normal"
                         sx={{ mb: { xs: 2, sm: 0 } }}
@@ -101,6 +97,15 @@ export default function Loancalc() {
                         type="number"
                         value={interestRate}
                         onChange={(e) => setInterestRate(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        sx={{ mb: { xs: 2, sm: 0 } }}
+                    />
+                    <TextField
+                        label="단위"
+                        variant="outlined"
+                        value={unit}
+                        onChange={(e) => handleFormatChange('unit', e.target.value)}
                         fullWidth
                         margin="normal"
                         sx={{ mb: { xs: 2, sm: 0 } }}
@@ -164,6 +169,6 @@ export default function Loancalc() {
                     </Box>
                 )}
             </Container>
-        </BackgroundContainer>
+        </Box>
     );
 }

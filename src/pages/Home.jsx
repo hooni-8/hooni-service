@@ -1,17 +1,8 @@
 import React from 'react';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import '@styles/Home.scss';
 import { Box, Typography, Button, Paper, Stack } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import {useNavigate} from "react-router-dom";
 import Logo from '@assets/imgs/Hooni_logo.png';
-
-const CenteredContainer = styled(Box)(({ theme }) => ({
-    height: 'calc(100vh - 64px)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'linear-gradient(to right, #e3f2fd, #bbdefb)',
-}));
 
 export default function Home() {
     const navigate = useNavigate();
@@ -21,7 +12,7 @@ export default function Home() {
     ];
 
     return (
-        <CenteredContainer>
+        <Box className='background-container'>
             <Paper elevation={6} sx={{ padding: 6, borderRadius: 4, maxWidth: 400, boxSizing: 'border-box' }}>
                 <Stack spacing={3} alignItems="center">
                     <img src={Logo} alt="logo" style={{height: 60, width: 'auto'}}/>
@@ -47,6 +38,6 @@ export default function Home() {
                     </Stack>
                 </Stack>
             </Paper>
-        </CenteredContainer>
+        </Box>
     );
 }
