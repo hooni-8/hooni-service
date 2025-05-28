@@ -1,5 +1,5 @@
 import { useState } from "react";
-import '@styles/loancalc/Loancalc.scss';
+import '@styles/loancalc/Expiration.scss';
 import {
     Box,
     Button,
@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { parseNumber, numberOnly, formatNumber } from "@components/utils/Utils";
 
-export default function Loancalc() {
+export default function Expiration() {
     const [principal, setPrincipal] = useState('');             // 대출금
     const [interestRate, setInterestRate] = useState('');       // 금리
     const [unit, setUnit] = useState('1,000,000');              // 단위
@@ -49,7 +49,7 @@ export default function Loancalc() {
         }
 
         const rows = [];
-        for (let amount = maxAmount; amount >= unitInt; amount -= unitInt) {
+        for (let amount = maxAmount; amount > 0; amount -= unitInt) {
             const totalInterest = amount * rate;
             const dailyInterest = totalInterest / 365;
 
