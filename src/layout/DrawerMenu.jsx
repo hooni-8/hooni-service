@@ -1,5 +1,5 @@
-import {Box, Drawer, List, ListItem, ListItemText} from "@mui/material";
 import React from "react";
+import {Box, Drawer, List, ListItem, ListItemText} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import * as path from "@components/utils/Path";
 
@@ -9,6 +9,7 @@ export default function DrawerMenu({drawerOpen, setDrawerOpen, toggleDrawer}) {
         { text: '홈', path: '/' },
         { text: '만기상환 이자 계산기', path: path.Expiration},
         { text: '원리금 균등상환 계산기', path: path.Evenness},
+        { text: '가계부', path: path.CashFlow},
     ];
 
     const handleMenuClick = (path) => {

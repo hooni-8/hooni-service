@@ -10,6 +10,7 @@ export default function Home() {
     const menuItems = [
         { text: '만기상환 이자 계산기', path: path.Expiration, variant: 'outlined'},
         { text: '원리금 균등상환 계산기', path: path.Evenness, variant: 'contained'},
+        { text: '가계부', path: path.CashFlow, variant: 'outlined'},
     ];
 
     return (

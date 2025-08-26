@@ -5,6 +5,7 @@ import Home from "@pages/Home";
 
 import Expiration from "@pages/loancalc/Expiration";
 import Evenness from "@pages/loancalc/Evenness";
+import CashFlow from "@pages/cashflow/CashFlow";
 
 export default function Router() {
     return (
@@ -15,6 +16,7 @@ export default function Router() {
                 <Route path="expiration" element={<Expiration />} />
                 <Route path="evenness" element={<Evenness />} />
             </Route>
+            <Route path="cashflow" element={<CashFlow />} />
         </Routes>
     )
 }
