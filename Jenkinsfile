@@ -7,10 +7,10 @@ pipeline {
 	}
 
 	environment {
+    	IMAGE_PATH = "hooni"
 		REPLACE_NAME = "hooni-front"
 		IMAGE_NAME = "${REPLACE_NAME}:v"
 		IMAGE_VERSION = "0.0.${BUILD_NUMBER}"
-		IMAGE_PATH = "hooni"
 
 		// ARGOCD_GIT_URL = "gitlab.comes.co.kr/comesreal/argocd.git"
 		ARGOCD_GIT_URL = "https://github.com/hooni-8/argocd.git"
@@ -41,28 +41,28 @@ pipeline {
                 }
 		}
 
-//         stage('Build & Push Docker Image') {
-//             steps {
-//                 container('kaniko') {
-//                     sh """
-//                         /kaniko/executor --context `pwd` \
-//                                          --dockerfile `pwd`/Dockerfile \
-//                                          --destination docker.hooni.co.kr/${IMAGE_PATH}/${IMAGE_NAME}${IMAGE_VERSION}
-//                     """
-//                 }
-//             }
-//
-// 			post {
-// 				failure {
-// 					echo 'Building image & push failed...'
-// 					updateGitlabCommitStatus name: 'image', state: 'failed'
-// 				}
-// 				success {
-// 					echo 'Building image & push succeeded...'
-// 					updateGitlabCommitStatus name: 'image', state: 'success'
-// 				}
-//         	}
-//         }
+        stage('Build & Push Docker Image') {
+            steps {
+                container('kaniko') {
+                    sh """
+                        /kaniko/executor --context `pwd` \
+                                         --dockerfile `pwd`/Dockerfile \
+                                         --destination docker.hooni.co.kr/${IMAGE_PATH}/${IMAGE_NAME}${IMAGE_VERSION}
+                    """
+                }
+            }
+
+			post {
+				failure {
+					echo 'Building image & push failed...'
+					updateGitlabCommitStatus name: 'image', state: 'failed'
+				}
+				success {
+					echo 'Building image & push succeeded...'
+					updateGitlabCommitStatus name: 'image', state: 'success'
+				}
+        	}
+        }
 //
 // 		stage('Update ArgoCD Manifest') {
 // 			steps {
