@@ -18,8 +18,8 @@ pipeline {
 		ARGOCD_DEPLOY_YAML_FILE = "hooni/hooni-front/deployment.yaml"
 	}
 
-        stages {
-            stage('Build React App') {
+//         stages {
+//             stage('Build React App') {
 //                 steps {
 //                     container('kaniko') {
 //                             nodejs(nodeJSInstallationName: 'nodejs', configId: 'nexus-npm-config') {
@@ -35,13 +35,13 @@ pipeline {
 //                         updateGitlabCommitStatus name: 'build', state: 'failed'
 //                     }
 //                     success {
-                        echo 'Building React app succeeded...'
+//                         echo 'Building React app succeeded...'
 //                         updateGitlabCommitStatus name: 'build', state: 'success'
 //                     }
 //                 }
-		}
-
-        stage('Build & Push Docker Image') {
+// 		}
+//
+//         stage('Build & Push Docker Image') {
 //             steps {
 //                 container('kaniko') {
 //                     sh """
@@ -58,13 +58,13 @@ pipeline {
 // 					updateGitlabCommitStatus name: 'image', state: 'failed'
 // 				}
 // 				success {
-					echo 'Building image & push succeeded...'
+// 					echo 'Building image & push succeeded...'
 // 					updateGitlabCommitStatus name: 'image', state: 'success'
 // 				}
 //         	}
-        }
-
-		stage('Update ArgoCD Manifest') {
+//         }
+//
+// 		stage('Update ArgoCD Manifest') {
 // 			steps {
 // 				sh "mkdir argocd"
 //
@@ -89,13 +89,49 @@ pipeline {
 // 					updateGitlabCommitStatus name: 'deploy', state: 'failed'
 // 				}
 // 				success {
-					echo 'Updating ArgoCD manifest succeeded...'
+// 					echo 'Updating ArgoCD manifest succeeded...'
 // 					updateGitlabCommitStatus name: 'deploy', state: 'success'
 // 				}
 // 		        always {
 // 		            cleanWs(deleteDirs: true, disableDeferredWipeout: true)
 // 		        }
 //         	}
-		}
-	}
+// 		}
+// 	}
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo '📥 소스 코드 체크아웃 단계 실행'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo '🔨 빌드 단계 실행'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo '🧪 테스트 단계 실행'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo '🚀 배포 단계 실행'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ 파이프라인 성공적으로 완료!'
+        }
+        failure {
+            echo '❌ 파이프라인 실패!'
+        }
+    }
+
 }
