@@ -1,35 +1,10 @@
 pipeline {
 
 	agent {
-		podTemplate(
-          containers: [
-            containerTemplate(
-              name: 'kaniko',
-              image: 'docker.hooni.co.kr/kaniko-project/executor:jenkins',
-              command: 'cat',
-              ttyEnabled: true,
-              volumeMounts: [
-                [mountPath: '/kaniko-ca', secretVolume: 'nexus-ca']
-              ]
-            )
-          ]
-        ) {
-          node(POD_LABEL) {
-            stage('Build') {
-              container('kaniko') {
-                sh '''
-                  /kaniko/executor \
-                    --dockerfile=/workspace/Dockerfile \
-                    --context=dir:///workspace \
-                    --destination=docker.hooni.co.kr/my-app:latest \
-                    --registry-certificate=docker.hooni.co.kr=/kaniko-ca/ca.crt
-                '''
-              }
-            }
-          }
-        }
+		node {
+			label 'kaniko-pod'
+		}
 	}
-
 
 	environment {
     	IMAGE_PATH = "hooni"
