@@ -28,7 +28,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "build": "CI=false env-cmd -f .env craco build",
     "test": "craco test",
     "eject": "craco eject"
   },
