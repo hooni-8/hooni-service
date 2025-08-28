@@ -1,58 +1,35 @@
 pipeline {
-    agent {
-        kubernetes {
-            yaml """
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    jenkins: slave
-    jenkins/label: kaniko-pod
-spec:
-  containers:
-  - name: kaniko
-    image: docker.hooni.co.kr/kaniko-project/executor:jenkins
-    command:
-    - cat
-    tty: true
-    workingDir: /home/jenkins/agent
-    volumeMounts:
-    - mountPath: /home/jenkins/agent
-      name: workspace-volume
-      readOnly: false
-    - mountPath: /kaniko-ca
-      name: ca-cert
-      readOnly: true
-  - name: jnlp
-    image: jenkins/inbound-agent:3309.v27b_9314fd1a_4-1
-    env:
-      - name: JENKINS_SECRET
-        value: "********"
-      - name: JENKINS_TUNNEL
-        value: "jenkins-service.jenkins.svc:50000"
-      - name: JENKINS_AGENT_NAME
-        value: kaniko-pod
-      - name: REMOTING_OPTS
-        value: "-noReconnectAfter 1d"
-      - name: JENKINS_NAME
-        value: kaniko-pod
-      - name: JENKINS_AGENT_WORKDIR
-        value: "/home/jenkins/agent"
-      - name: JENKINS_URL
-        value: "http://jenkins.hooni.co.kr/"
-    volumeMounts:
-      - mountPath: /home/jenkins/agent
-        name: workspace-volume
-        readOnly: false
-  volumes:
-  - name: workspace-volume
-    emptyDir: {}
-  - name: ca-cert
-    secret:
-      secretName: nexus-ca
-"""
+
+	agent {
+		podTemplate(
+          containers: [
+            containerTemplate(
+              name: 'kaniko',
+              image: 'docker.hooni.co.kr/kaniko-project/executor:jenkins',
+              command: 'cat',
+              ttyEnabled: true,
+              volumeMounts: [
+                [mountPath: '/kaniko-ca', secretVolume: 'nexus-ca']
+              ]
+            )
+          ]
+        ) {
+          node(POD_LABEL) {
+            stage('Build') {
+              container('kaniko') {
+                sh '''
+                  /kaniko/executor \
+                    --dockerfile=/workspace/Dockerfile \
+                    --context=dir:///workspace \
+                    --destination=docker.hooni.co.kr/my-app:latest \
+                    --registry-certificate=docker.hooni.co.kr=/kaniko-ca/ca.crt
+                '''
+              }
+            }
+          }
         }
-    }
+	}
+
 
 	environment {
     	IMAGE_PATH = "hooni"
