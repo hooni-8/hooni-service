@@ -46,7 +46,7 @@ pipeline {
                 container('kaniko') {
                     sh """
                         /kaniko/executor --insecure \
-                                         --insecure-pull
+                                         --insecure-pull \
                                          --context `pwd` \
                                          --dockerfile `pwd`/Dockerfile \
                                          --destination docker.hooni.co.kr/${IMAGE_PATH}/${IMAGE_NAME}${IMAGE_VERSION}
