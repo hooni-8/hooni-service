@@ -45,11 +45,10 @@ pipeline {
             steps {
                 container('kaniko') {
                     sh """
+                        echo '{"insecure-registries":["docker.hooni.co.kr"]}' > /kaniko/.docker/config.json
                         /kaniko/executor --context `pwd` \
                                          --dockerfile `pwd`/Dockerfile \
                                          --destination docker.hooni.co.kr/${IMAGE_PATH}/${IMAGE_NAME}${IMAGE_VERSION}
-                                         --insecure-registry docker.hooni.co.kr \
-                                         --skip-tls-verify
                     """
                 }
             }
