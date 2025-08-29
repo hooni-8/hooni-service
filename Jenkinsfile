@@ -69,7 +69,7 @@ pipeline {
 				sh "mkdir argocd"
 
 				dir("argocd"){
-					git credentialsId: "hooni-github", url: "https://${ARGOCD_GIT_URL}", branch: "${ARGOCD_GIT_BRANCH}"
+					git credentialsId: "github-hooni", url: "https://${ARGOCD_GIT_URL}", branch: "${ARGOCD_GIT_BRANCH}"
 
 					sh "git config user.email 'lee990726@gmail.com'"
 					sh "git config user.name 'Hooni'"
