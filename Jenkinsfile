@@ -48,6 +48,7 @@ pipeline {
                         /kaniko/executor --context `pwd` \
                                          --dockerfile `pwd`/Dockerfile \
                                          --destination docker.hooni.co.kr/${IMAGE_PATH}/${IMAGE_NAME}${IMAGE_VERSION}
+                                         --insecure-registry docker.hooni.co.kr
                     """
                 }
             }
