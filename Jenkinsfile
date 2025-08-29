@@ -45,6 +45,8 @@ pipeline {
             steps {
                 container('kaniko') {
                     sh """
+                        export SSL_CERT_DIR=/etc/ssl/certs/custom-ca
+
                         /kaniko/executor --context `pwd` \
                                          --dockerfile `pwd`/Dockerfile \
                                          --destination docker.hooni.co.kr/${IMAGE_PATH}/${IMAGE_NAME}${IMAGE_VERSION}
