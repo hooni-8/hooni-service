@@ -42,9 +42,13 @@ pipeline {
 		}
 
         stage('Build & Push Docker Image') {
+            environment {
+                DOCKER_CONFIG = '/kaniko/.docker'
+            }
             steps {
                 container('kaniko') {
                     sh """
+                        mkdir -p /kaniko/.docker
                         echo '{"insecure-registries":["docker.hooni.co.kr"]}' > /kaniko/.docker/config.json
                         /kaniko/executor --context `pwd` \
                                          --dockerfile `pwd`/Dockerfile \
