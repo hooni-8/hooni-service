@@ -48,6 +48,8 @@ pipeline {
                         /kaniko/executor --context `pwd` \
                                          --dockerfile `pwd`/Dockerfile \
                                          --destination docker.hooni.co.kr/${IMAGE_PATH}/${IMAGE_NAME}${IMAGE_VERSION}
+                                         --insecure \
+                                         --insecure-pull
                     """
                 }
             }
@@ -98,40 +100,5 @@ pipeline {
 //         	}
 // 		}
 	}
-
-//     stages {
-//         stage('Checkout') {
-//             steps {
-//                 echo '📥 소스 코드 체크아웃 단계 실행'
-//             }
-//         }
-//
-//         stage('Build') {
-//             steps {
-//                 echo '🔨 빌드 단계 실행'
-//             }
-//         }
-//
-//         stage('Test') {
-//             steps {
-//                 echo '🧪 테스트 단계 실행'
-//             }
-//         }
-//
-//         stage('Deploy') {
-//             steps {
-//                 echo '🚀 배포 단계 실행'
-//             }
-//         }
-//     }
-//
-//     post {
-//         success {
-//             echo '✅ 파이프라인 성공적으로 완료!'
-//         }
-//         failure {
-//             echo '❌ 파이프라인 실패!'
-//         }
-//     }
 
 }
