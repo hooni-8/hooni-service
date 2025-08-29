@@ -63,40 +63,40 @@ pipeline {
 				}
         	}
         }
-//
-// 		stage('Update ArgoCD Manifest') {
-// 			steps {
-// 				sh "mkdir argocd"
-//
-// 				dir("argocd"){
-// 					git credentialsId: "comes-gitlab", url: "https://${ARGOCD_GIT_URL}", branch: "${ARGOCD_GIT_BRANCH}"
-//
-// 					sh "git config user.email 'lee990726@gmail.com'"
-// 					sh "git config user.name 'Hooni'"
-// 					sh "sed -i 's/${REPLACE_NAME}:.*\$/${IMAGE_NAME}${IMAGE_VERSION}/g' ${ARGOCD_DEPLOY_YAML_FILE}"
-// 					sh "git add ${ARGOCD_DEPLOY_YAML_FILE}"
-// 					sh "git commit -m '[UPDATE] docker image info -> ${IMAGE_NAME}${IMAGE_VERSION}'"
-//
-// 					withCredentials([usernamePassword(credentialsId: "hooni-github", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-// 						sh("git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${ARGOCD_GIT_URL}")
-// 					}
-// 				}
-// 			}
-//
-// 			post {
-// 				failure {
-// 					echo 'Updating ArgoCD manifest failed...'
-// 					updateGitlabCommitStatus name: 'deploy', state: 'failed'
-// 				}
-// 				success {
-// 					echo 'Updating ArgoCD manifest succeeded...'
-// 					updateGitlabCommitStatus name: 'deploy', state: 'success'
-// 				}
-// 		        always {
-// 		            cleanWs(deleteDirs: true, disableDeferredWipeout: true)
-// 		        }
-//         	}
-// 		}
+
+		stage('Update ArgoCD Manifest') {
+			steps {
+				sh "mkdir argocd"
+
+				dir("argocd"){
+					git credentialsId: "hooni-github", url: "https://${ARGOCD_GIT_URL}", branch: "${ARGOCD_GIT_BRANCH}"
+
+					sh "git config user.email 'lee990726@gmail.com'"
+					sh "git config user.name 'Hooni'"
+					sh "sed -i 's/${REPLACE_NAME}:.*\$/${IMAGE_NAME}${IMAGE_VERSION}/g' ${ARGOCD_DEPLOY_YAML_FILE}"
+					sh "git add ${ARGOCD_DEPLOY_YAML_FILE}"
+					sh "git commit -m '[UPDATE] docker image info -> ${IMAGE_NAME}${IMAGE_VERSION}'"
+
+					withCredentials([usernamePassword(credentialsId: "hooni-github", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+						sh("git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${ARGOCD_GIT_URL}")
+					}
+				}
+			}
+
+			post {
+				failure {
+					echo 'Updating ArgoCD manifest failed...'
+					updateGitlabCommitStatus name: 'deploy', state: 'failed'
+				}
+				success {
+					echo 'Updating ArgoCD manifest succeeded...'
+					updateGitlabCommitStatus name: 'deploy', state: 'success'
+				}
+		        always {
+		            cleanWs(deleteDirs: true, disableDeferredWipeout: true)
+		        }
+        	}
+		}
 	}
 
 }
