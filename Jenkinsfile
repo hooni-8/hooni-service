@@ -69,7 +69,7 @@ pipeline {
 				sh "mkdir argocd"
 
 				dir("argocd"){
-					git credentialsId: "github-hooni", url: "https://${ARGOCD_GIT_URL}", branch: "${ARGOCD_GIT_BRANCH}"
+					git credentialsId: "github-api-token", url: "https://${ARGOCD_GIT_URL}", branch: "${ARGOCD_GIT_BRANCH}"
 
 					sh "git config user.email 'lee990726@gmail.com'"
 					sh "git config user.name 'Hooni'"
@@ -77,7 +77,7 @@ pipeline {
 					sh "git add ${ARGOCD_DEPLOY_YAML_FILE}"
 					sh "git commit -m '[UPDATE] docker image info -> ${IMAGE_NAME}${IMAGE_VERSION}'"
 
-					withCredentials([usernamePassword(credentialsId: "hooni-github", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+					withCredentials([usernamePassword(credentialsId: "github-api-token", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
 						sh("git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${ARGOCD_GIT_URL}")
 					}
 				}
