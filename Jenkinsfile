@@ -45,11 +45,11 @@ pipeline {
             steps {
                 container('kaniko') {
                     sh """
-                        /kaniko/executor --context `pwd` \
+                        /kaniko/executor --insecure \
+                                         --insecure-pull
+                                         --context `pwd` \
                                          --dockerfile `pwd`/Dockerfile \
                                          --destination docker.hooni.co.kr/${IMAGE_PATH}/${IMAGE_NAME}${IMAGE_VERSION}
-                                         --insecure \
-                                         --insecure-pull
                     """
                 }
             }
