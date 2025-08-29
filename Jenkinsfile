@@ -13,7 +13,7 @@ pipeline {
 		IMAGE_VERSION = "0.0.${BUILD_NUMBER}"
 
 		// ARGOCD_GIT_URL = "gitlab.comes.co.kr/comesreal/argocd.git"
-		ARGOCD_GIT_URL = "https://github.com/hooni-8/argocd.git"
+		ARGOCD_GIT_URL = "github.com/hooni-8/argocd.git"
 		ARGOCD_GIT_BRANCH = "main"
 		ARGOCD_DEPLOY_YAML_FILE = "hooni/hooni-front/deployment.yaml"
 	}
